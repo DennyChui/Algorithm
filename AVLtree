@@ -1,0 +1,146 @@
+#include <stdio.h>
+#include <stdlib.h> 
+#include <stddef.h>
+#include <stdarg.h>
+#include <limits.h>
+#include <string.h>
+#define ERROR 0
+#define OVERFLOW -2
+#define OK 1 
+#define TRUE 1
+#define INFEASIBLE -1
+#define FALSE 0
+#define INIT_STACK_SIZE 100
+#define STACKINCREMENT 10 
+#define MAX_TREE_SIZE 100
+#define INFINITY INT_MAX
+#define MAX_VEX_NUM 100
+#define MAX_QUE_SIZE 4
+#define INFINITY INT_MAX
+
+typedef int Status;
+typedef int Boolean;
+typedef int ElemType;
+typedef int KeyType;
+
+typedef struct BSTNode{
+	ElemType data;
+	int bf;
+	struct BSTNode *lchild, *rchild;
+}BSTNode,*BSTree;
+
+Status SearchBST(BSTree T,KeyType key,BSTree f,BSTree &p){
+	if(!T){
+		p=f;
+		return FALSE;
+	}
+	if(key==p->data){
+		return OK;
+	}
+	else if(key<p->data){
+		f=p;
+		p=p->lchild;
+		SearchBST(p,key,f,p);
+	}
+	else if(key>p->data){
+		f=p;
+		p=p->rchild;
+		SearchBST(p,key,f,p);
+	}
+}
+
+Status InsertAVL(BSTree &T,ElemType e,Boolean taller){
+	if(!T){
+		T=(BSTree)malloc(sizeof(BSTNode));
+		T->data=e;
+		T->lchild=NULL;
+		T->rchild=NULL;
+		T->bf=0;
+		return OK;
+	}
+	if(e==T->data){
+		taller=FALSE;
+		return 0;
+	}
+	if(e<T->data){
+		InsertAVL(T->lchild,e,taller);
+		if(taller){
+			switch(T->bf){
+				case -1:
+					T->bf=0;
+					taller=FALSE;
+					break;
+				case 0:
+					T->bf=-1;
+					taller=TRUE;
+					break;
+				case 1:
+					LeftBalance(T);
+					taller=FALSE;
+					break;
+			}
+		}
+	}
+	else{
+		InsertAVL(T->rchild,e,taller);
+		if(taller){
+			switch(T->bf){
+				case -1:
+					RightBalance(T);
+					taller=FALSE;
+					break;
+				case 0:
+					T->bf=-1;
+					taller=TRUE;
+					break;
+				case 1:
+					T->bf=0;
+					taller=FALSE;
+					break;
+			}
+		}
+	}
+	return 1;
+}
+
+void R_Rotate(BSTree &T){
+	BSTree temp=T->lchild;
+	T->lchild=temp->rchild;
+	temp->rchild=T;
+	T=temp;
+}
+
+void L_Rotate(BSTree &T){
+	BSTree temp=T->rchild;
+	T->rchild=temp->lchild;
+	temp->lchild=T;
+	T=temp;
+}
+
+void LeftBalance(BSTree &T){
+	switch(T->lchild->bf){
+		case 1:
+			T->bf=0;
+			T->lchild->bf=0;
+			R_Rotate(T);
+		case -1;
+			
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
