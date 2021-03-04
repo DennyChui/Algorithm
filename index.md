@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## 算法笔记-数学篇
 
 You can use the [editor on GitHub](https://github.com/DennyChui/Algorithm/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
